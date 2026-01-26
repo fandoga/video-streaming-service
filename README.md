@@ -1,36 +1,151 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Netflix Project
+
+This is a [Next.js](https://nextjs.org) project with TypeScript, Tailwind CSS, Redux Toolkit, RTK Query, shadcn/ui, ESLint, and Prettier.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: Redux Toolkit + RTK Query
+- **UI Components**: shadcn/ui
+- **Code Quality**: ESLint + Prettier
+
+## Project Structure
+
+This project follows a **feature-based architecture**:
+
+```
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout with Redux provider
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles with Tailwind
+├── features/              # Feature modules (feature-based architecture)
+│   └── example/          # Example feature
+│       ├── api/          # RTK Query API definitions
+│       ├── slice/        # Redux slices
+│       ├── components/   # Feature-specific components
+│       ├── hooks/        # Feature-specific hooks
+│       ├── types/        # Feature-specific types
+│       ├── utils/        # Feature-specific utilities
+│       └── index.ts      # Public API exports
+├── shared/               # Shared code across features
+│   ├── components/       # Shared components
+│   ├── hooks/            # Shared hooks
+│   ├── types/            # Shared types
+│   └── utils/            # Shared utilities
+├── components/           # Global components
+│   ├── providers/        # Context providers (Redux, etc.)
+│   └── ui/               # shadcn/ui components
+├── lib/                  # Library code
+│   ├── store.ts          # Redux store configuration
+│   ├── hooks.ts          # Typed Redux hooks
+│   └── utils.ts          # Utility functions
+└── public/               # Static assets
+```
 
 ## Getting Started
 
-First, run the development server:
+### Installation
+
+Dependencies are already installed. If you need to reinstall:
+
+```bash
+npm install
+```
+
+### Development
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Code Quality
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lint your code:
+
+```bash
+npm run lint
+```
+
+Fix linting issues automatically:
+
+```bash
+npm run lint:fix
+```
+
+Format your code with Prettier:
+
+```bash
+npm run format
+```
+
+Check formatting without making changes:
+
+```bash
+npm run format:check
+```
+
+## Redux Setup
+
+The project uses Redux Toolkit with RTK Query. The store is configured in `lib/store.ts` and wrapped around the app in `app/layout.tsx`.
+
+### Using Redux in Components
+
+```typescript
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { increment } from "@/features/example";
+
+export default function MyComponent() {
+  const count = useAppSelector((state) => state.example.value);
+  const dispatch = useAppDispatch();
+
+  return (
+    <button onClick={() => dispatch(increment())}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+### Using RTK Query
+
+```typescript
+import { useGetExampleQuery } from "@/features/example";
+
+export default function MyComponent() {
+  const { data, isLoading, error } = useGetExampleQuery(1);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error occurred</div>;
+
+  return <div>{data?.name}</div>;
+}
+```
+
+## Adding New Features
+
+1. Create a new folder in `features/` with your feature name
+2. Add the following structure:
+   - `api/` - RTK Query API definitions
+   - `slice/` - Redux slices (if needed)
+   - `components/` - Feature components
+   - `hooks/` - Feature hooks
+   - `types/` - Feature types
+   - `utils/` - Feature utilities
+   - `index.ts` - Public exports
+3. Register the feature in `lib/store.ts`:
+   - Add reducer to the `reducer` object
+   - Add API middleware if using RTK Query
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
+- [RTK Query Documentation](https://redux-toolkit.js.org/rtk-query/overview)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com/)
