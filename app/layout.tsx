@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Netflix",
-  description: "Netflix application",
+  title: "Betflix",
+  description: "Betflix streaming platform",
 };
 
 export default function RootLayout({

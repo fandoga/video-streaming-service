@@ -8,11 +8,11 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-gray-800 bg-black/95 backdrop-blur-sm">
+    <nav className="sticky top-0 z-40 w-full bg-black/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-red-600">
-          Netflix
+        <Link href="/" className="text-2xl font-bold text-white">
+          Betflix
         </Link>
 
         {/* Navigation Links */}
@@ -72,7 +72,7 @@ export default function Navbar() {
           </button>
 
           {/* Profile */}
-          <div className="h-8 w-8 rounded-full bg-gray-600"></div>
+          {/* <div className="h-8 w-8 rounded-full bg-gray-600"></div> */}
         </div>
       </div>
 

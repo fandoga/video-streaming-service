@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetMovieByIdQuery } from "../api/moviesApi";
+import { MoviePlayer } from "./MoviePlayer";
 
 interface MovieDetailsProps {
   movieId: string;
@@ -37,30 +38,37 @@ export default function MovieDetails({ movieId }: MovieDetailsProps) {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="mb-4 text-3xl font-bold">{data.title}</h1>
-      <div className="mb-4">
-        <img
-          src={data.posterUrl}
-          alt={data.title}
-          className="mb-4 h-96 w-full rounded-lg object-cover"
-        />
-      </div>
-      <p className="mb-4 text-lg">{data.description}</p>
-      <div className="mb-4 flex flex-wrap gap-2">
-        {data.genres.map((genre) => (
-          <span
-            key={genre}
-            className="rounded-full bg-gray-200 px-3 py-1 text-sm"
-          >
-            {genre}
-          </span>
-        ))}
-      </div>
-      <div className="text-sm text-gray-600">
-        <p>Рейтинг: {data.rating}</p>
-        <p>Дата выхода: {data.releaseDate}</p>
-        <p>Длительность: {data.duration} мин</p>
+    <div className="p-4 pb-20">
+      <div className="mb-4 flex gap-4">
+        <div className="mb-4 h-1/2 w-1/4">
+          <img
+            src={data.posterUrl}
+            alt={data.title}
+            className="w-full h-full rounded-md object-cover"
+          />
+        </div>
+        <div className="w-full">
+          <h1 className="mb-4 text-3xl font-bold">
+            {data.title}
+            <small className="font-normal text-md"> смотреть фильм</small>
+          </h1>
+          <p className="mb-4 text-lg">{data.description}</p>
+          <div className="mb-4 flex flex-wrap gap-2">
+            {data.genres.map((genre) => (
+              <span
+                key={genre}
+                className="rounded-full bg-gray-200 px-3 py-1 text-sm"
+              >
+                {genre}
+              </span>
+            ))}
+          </div>
+          <div className="text-sm text-gray-600">
+            <p>Рейтинг: {data.rating}</p>
+            <p>Дата выхода: {data.releaseDate}</p>
+            <p>Длительность: {data.duration} мин</p>
+          </div>
+        </div>
       </div>
     </div>
   );

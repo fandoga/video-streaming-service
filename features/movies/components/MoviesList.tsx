@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useGetMoviesQuery } from "../api/moviesApi";
+import MovieCard from "./MovieCard";
 
 export default function MoviesList() {
   const { data, isLoading, error, isFetching } = useGetMoviesQuery();
@@ -38,19 +38,9 @@ export default function MoviesList() {
       {isFetching && (
         <div className="mb-4 text-sm text-gray-500">Обновление данных...</div>
       )}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
         {data.movies.map((movie) => (
-          <div
-            key={movie.id}
-            className="rounded-lg border border-gray-200 p-4 shadow-sm"
-          >
-            <img src={movie.posterUrl} alt="posterImg"/>
-            <h3 className="mb-2 text-lg font-semibold">{movie.title}</h3>
-            <p className="mb-2 text-sm text-gray-600">{movie.description}</p>
-            <div className="text-xs text-gray-500">
-              Рейтинг: {movie.rating} | {movie.releaseDate}
-            </div>
-          </div>
+          <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
     </div>

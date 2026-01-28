@@ -9,17 +9,25 @@ interface MoviesData {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+
   // Читаем JSON файл
   const filePath = join(process.cwd(), "data", "movies.json");
   const fileContents = readFileSync(filePath, "utf8");
   const moviesData: MoviesData = JSON.parse(fileContents);
 
-  const movie = moviesData.movies.find((m) => m.id === params.id);
+  const targetId = `${id}`;
+
+  // Делаем поиск по строковому id, чтобы работало и с числовыми, и со строковыми id в JSON
+  const movie = moviesData.movies.find((m) => `${m.id}` === targetId);
 
   if (!movie) {
-    return NextResponse.json({ error: "Movie not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Movie not found", requestId: targetId },
+      { status: 404 }
+    );
   }
 
   // Имитация задержки сети

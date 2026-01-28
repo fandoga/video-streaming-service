@@ -1,109 +1,91 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useSearchMoviesQuery } from "@/features/movies/api/moviesApi";
-import Link from "next/link";
 import type { Movie } from "@/features/movies/types/movies.types";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "../ui/combobox";
 
 interface SearchBarProps {
   onClose?: () => void;
 }
 
 export default function SearchBar({ onClose }: SearchBarProps) {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
+
+  const shouldQuery = searchQuery.trim().length >= 2;
 
   const { data, isLoading } = useSearchMoviesQuery(
     { query: searchQuery },
-    { skip: searchQuery.length < 2 }
+    { skip: !shouldQuery }
   );
 
-  useEffect(() => {
-    setIsOpen(searchQuery.length >= 2);
-  }, [searchQuery]);
+  // Когда строка поиска пустая (в том числе после закрытия комбобокса),
+  // просто не показываем элементы, даже если в кэше ещё есть данные
+  const items: Movie[] = shouldQuery ? (data?.movies ?? []) : [];
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-        setSearchQuery("");
-        onClose?.();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+  const getStatus = () => {
+    if (isLoading) {
+      return <p>Loading</p>;
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+  };
 
   return (
-    <div ref={searchRef} className="relative w-full max-w-md">
-      <div className="relative">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Поиск фильмов..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pr-10 text-black focus:border-blue-500 focus:outline-none"
-        />
-        {isLoading && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"></div>
-          </div>
-        )}
-      </div>
+    <Combobox
+      items={items}
+      onInputValueChange={(value) => {
+        setSearchQuery(value);
+      }}
+      onOpenChange={(open) => {
+        if (!open) {
+          setSearchQuery("");
+        }
+      }}
+      onValueChange={(movie) => {
+        const selected = movie as Movie | null;
+        if (!selected) return;
 
-      {isOpen && (
-        <div className="absolute z-50 mt-2 max-h-96 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
-          {isLoading ? (
-            <div className="p-4 text-center text-gray-500">Поиск...</div>
-          ) : data && data.movies.length > 0 ? (
-            <div className="py-2">
-              {data.movies.slice(0, 5).map((movie: Movie) => (
-                <Link
-                  key={movie.id}
-                  href={`/movies/${movie.id}`}
-                  onClick={() => {
-                    setIsOpen(false);
-                    setSearchQuery("");
-                    onClose?.();
-                  }}
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  <div className="font-semibold">{movie.title}</div>
-                  <div className="text-sm text-gray-500">
-                    {movie.releaseDate} • Рейтинг: {movie.rating}
-                  </div>
-                </Link>
-              ))}
-              {data.movies.length > 5 && (
-                <Link
-                  href={`/search?q=${encodeURIComponent(searchQuery)}`}
-                  onClick={() => {
-                    setIsOpen(false);
-                    onClose?.();
-                  }}
-                  className="block px-4 py-2 text-center text-blue-500 hover:bg-gray-100"
-                >
-                  Показать все результаты ({data.total})
-                </Link>
-              )}
-            </div>
-          ) : (
-            <div className="p-4 text-center text-gray-500">
-              Фильмы не найдены
-            </div>
+        router.push(`/movies/${selected.id}`);
+        setSearchQuery("");
+        onClose?.();
+      }}
+    >
+      <ComboboxInput
+        className={"bg-white"}
+        placeholder="Поиск фильмов..."
+        showTrigger={false}
+        showClear
+        disabled={isLoading && !items.length}
+      />
+      <ComboboxContent>
+        <ComboboxEmpty>
+          {isLoading
+            ? "Загрузка..."
+            : searchQuery.trim().length < 2
+              ? "Начните ввод фильма"
+              : "Фильмы не найдены"}
+        </ComboboxEmpty>
+        <ComboboxList>
+          {(item: Movie) => (
+            <ComboboxItem key={item.id} value={item}>
+              <div className="flex flex-col cursor-pointer">
+                <span className="text-sm font-medium">{item.title}</span>
+                <span className="text-xs text-muted-foreground">
+                  {item.releaseDate} • рейтинг {item.rating}
+                </span>
+              </div>
+            </ComboboxItem>
           )}
-        </div>
-      )}
-    </div>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
   );
 }
