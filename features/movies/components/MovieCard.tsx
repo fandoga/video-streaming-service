@@ -23,16 +23,10 @@ export default function MovieCard({ movie }: MovieCardProps) {
         />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-3">
-        <h3 className="line-clamp-1 text-md font-semibold text-white">
+        <h3 className="line-clamp-1 text-lg font-semibold text-white">
           {movie.title}
         </h3>
-        <p className="line-clamp-2 text-xs text-zinc-400">
-          {movie.description}
-        </p>
         <div className="mt-auto flex items-center justify-between text-[11px] text-zinc-500">
-          <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-medium text-amber-400">
-            ★ {movie.rating}
-          </span>
           <span>{movie.releaseDate}</span>
         </div>
       </div>

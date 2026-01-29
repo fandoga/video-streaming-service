@@ -14,7 +14,7 @@ export default async function MoviePage({
   }
 
   return (
-    <main className="mx-auto max-w-7xl h-screen py-6 bg-accent">
+    <main className="mx-auto max-w-7xl h-full py-6 bg-accent">
       <MovieDetails movieId={id} />
       <MoviePlayer
         movieId={id}

@@ -1,62 +1,91 @@
 import { NextResponse } from "next/server";
-import { readFileSync } from "fs";
-import { join } from "path";
 import type {
   Movie,
   MoviesResponse,
 } from "@/features/movies/types/movies.types";
+import type {
+  OMDBSearchResponse,
+  OMDBMovieSearchItem,
+} from "@/features/movies/types/omdb.types";
 
-interface MoviesData {
-  movies: Movie[];
+const OMDB_API_URL = "http://www.omdbapi.com/";
+const OMDB_API_KEY =
+  process.env.OMDB_API_KEY || process.env.NEXT_PUBLIC_OMDB_API_KEY || "";
+
+// Преобразование OMDB ответа в наш формат Movie
+function transformOMDBToMovie(item: OMDBMovieSearchItem): Movie {
+  const rating =
+    item.imdbRating && item.imdbRating !== "N/A"
+      ? parseFloat(item.imdbRating)
+      : 0;
+
+  return {
+    id: item.imdbID,
+    title: item.Title,
+    description: "", // Будет заполнено при запросе деталей фильма
+    posterUrl: item.Poster !== "N/A" ? item.Poster : "",
+    backdropUrl: item.Poster !== "N/A" ? item.Poster : "",
+    releaseDate: item.Year,
+    rating,
+    genres: [], // Будет заполнено при запросе деталей фильма
+    duration: 0, // Будет заполнено при запросе деталей фильма
+  };
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1");
-  const limit = parseInt(searchParams.get("limit") || "12");
-  const genre = searchParams.get("genre");
-  const searchQuery = searchParams.get("q");
+  const type = searchParams.get("type") || "movies";
+  const searchQuery = searchParams.get("q") || searchParams.get("s") || "";
 
-  // Читаем JSON файл
-  const filePath = join(process.cwd(), "data", "movies.json");
-  const fileContents = readFileSync(filePath, "utf8");
-  const moviesData: MoviesData = JSON.parse(fileContents);
-
-  let movies: Movie[] = [...moviesData.movies];
-
-  // Фильтрация по жанру
-  if (genre) {
-    movies = movies.filter((movie) =>
-      movie.genres.some((g) => g.toLowerCase() === genre.toLowerCase())
+  if (!OMDB_API_KEY) {
+    return NextResponse.json(
+      { error: "OMDB API key is not configured" },
+      { status: 500 }
     );
   }
 
-  // Поиск
-  if (searchQuery) {
-    const query = searchQuery.toLowerCase();
-    movies = movies.filter(
-      (movie) =>
-        movie.title.toLowerCase().includes(query) ||
-        movie.description.toLowerCase().includes(query)
+  try {
+    // Если есть поисковый запрос, используем OMDB Search API
+    if (searchQuery) {
+      const omdbParams = new URLSearchParams({
+        apikey: OMDB_API_KEY,
+        s: searchQuery,
+        page: page.toString(),
+      });
+
+      const omdbResponse = await fetch(
+        `${OMDB_API_URL}?${omdbParams.toString()}`
+      );
+      const omdbData: OMDBSearchResponse = await omdbResponse.json();
+
+      if (omdbData.Response === "False") {
+        return NextResponse.json({
+          movies: [],
+          total: 0,
+          page,
+          totalPages: 0,
+        });
+      }
+
+      const movies: Movie[] = (omdbData.Search || []).map(transformOMDBToMovie);
+      const total = parseInt(omdbData.totalResults || "0");
+      const totalPages = Math.ceil(total / 10); // OMDB возвращает 10 результатов на страницу
+
+      const response: MoviesResponse = {
+        movies,
+        total,
+        page,
+        totalPages,
+      };
+
+      return NextResponse.json(response);
+    }
+  } catch (error) {
+    console.error("OMDB API error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch movies from OMDB API" },
+      { status: 500 }
     );
   }
-
-  // Пагинация
-  const total = movies.length;
-  const totalPages = Math.ceil(total / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  const paginatedMovies = movies.slice(startIndex, endIndex);
-
-  const response: MoviesResponse = {
-    movies: paginatedMovies,
-    total,
-    page,
-    totalPages,
-  };
-
-  // Имитация задержки сети
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return NextResponse.json(response);
 }

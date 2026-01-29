@@ -54,6 +54,23 @@ Dependencies are already installed. If you need to reinstall:
 npm install
 ```
 
+### Environment Setup
+
+1. Copy the example environment file:
+```bash
+cp .env.example .env.local
+```
+
+2. Get your OMDB API key from [https://www.omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx)
+
+3. Add your API key to `.env.local`:
+```env
+OMDB_API_KEY=your_api_key_here
+NEXT_PUBLIC_OMDB_API_KEY=your_api_key_here
+```
+
+**Note:** `.env.local` is already in `.gitignore` and won't be committed to the repository.
+
 ### Development
 
 Run the development server:

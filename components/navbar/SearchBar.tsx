@@ -32,12 +32,6 @@ export default function SearchBar({ onClose }: SearchBarProps) {
   // просто не показываем элементы, даже если в кэше ещё есть данные
   const items: Movie[] = shouldQuery ? (data?.movies ?? []) : [];
 
-  const getStatus = () => {
-    if (isLoading) {
-      return <p>Loading</p>;
-    }
-  };
-
   return (
     <Combobox
       items={items}
@@ -63,7 +57,6 @@ export default function SearchBar({ onClose }: SearchBarProps) {
         placeholder="Поиск фильмов..."
         showTrigger={false}
         showClear
-        disabled={isLoading && !items.length}
       />
       <ComboboxContent>
         <ComboboxEmpty>
@@ -79,7 +72,7 @@ export default function SearchBar({ onClose }: SearchBarProps) {
               <div className="flex flex-col cursor-pointer">
                 <span className="text-sm font-medium">{item.title}</span>
                 <span className="text-xs text-muted-foreground">
-                  {item.releaseDate} • рейтинг {item.rating}
+                  {item.releaseDate}
                 </span>
               </div>
             </ComboboxItem>

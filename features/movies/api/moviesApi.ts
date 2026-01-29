@@ -12,23 +12,22 @@ export const moviesApi = createApi({
     baseUrl:
       typeof window !== "undefined" ? "/api" : "http://localhost:3000/api",
   }),
-  tagTypes: ["Movies", "Movie"],
+  tagTypes: ["Movies", "Movie", "Series"],
   endpoints: (builder) => ({
-    // Get list of movies
+    // Get list of movies (использует дефолтный поиск "movie" если не указан genre)
     getMovies: builder.query<MoviesResponse, GetMoviesParams | void>({
       query: (params) => {
         const searchParams = new URLSearchParams();
+        // Используем дефолтный "game"
+        searchParams.append("s", "game");
         if (params?.page) {
           searchParams.append("page", params.page.toString());
         }
-        if (params?.limit) {
-          searchParams.append("limit", params.limit.toString());
-        }
-        if (params?.genre) {
-          searchParams.append("genre", params.genre);
+        if (params?.type) {
+          searchParams.append("type", params.type);
         }
         const queryString = searchParams.toString();
-        return `movies${queryString ? `?${queryString}` : ""}`;
+        return `movies?${queryString}`;
       },
       providesTags: (result) =>
         result
@@ -52,7 +51,7 @@ export const moviesApi = createApi({
     searchMovies: builder.query<MoviesResponse, SearchMoviesParams>({
       query: ({ query, page = 1 }) => {
         const searchParams = new URLSearchParams({
-          q: query,
+          s: query, // OMDB использует параметр "s" для поиска
           page: page.toString(),
         });
         return `movies?${searchParams.toString()}`;
