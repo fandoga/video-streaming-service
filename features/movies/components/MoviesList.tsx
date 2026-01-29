@@ -2,14 +2,19 @@
 
 import { useGetMoviesQuery } from "../api/moviesApi";
 import MovieCard from "./MovieCard";
+import MovieCardSkeleton from "./MovieCardSkeleton";
+
+const SKELETON_COUNT = 12;
 
 export default function MoviesList() {
   const { data, isLoading, error, isFetching } = useGetMoviesQuery();
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <div className="text-lg">Загрузка фильмов...</div>
+      <div className="p-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+        {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+          <MovieCardSkeleton key={index} />
+        ))}
       </div>
     );
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetMovieByIdQuery } from "../api/moviesApi";
-import { MoviePlayer } from "./MoviePlayer";
+import MovieDetailsSkeleton from "./MovieDetailsSkeleton";
 
 interface MovieDetailsProps {
   movieId: string;
@@ -11,11 +11,7 @@ export default function MovieDetails({ movieId }: MovieDetailsProps) {
   const { data, isLoading, error } = useGetMovieByIdQuery(movieId);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="text-lg">Загрузка информации о фильме...</div>
-      </div>
-    );
+    return <MovieDetailsSkeleton />;
   }
 
   if (error) {

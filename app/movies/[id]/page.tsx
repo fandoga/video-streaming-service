@@ -17,7 +17,7 @@ export default async function MoviePage({
     <main className="mx-auto max-w-7xl h-screen py-6 bg-accent">
       <MovieDetails movieId={id} />
       <MoviePlayer
-        poster=""
+        movieId={id}
         sources={[
           { src: "/test-vid.mp4", label: "1080p" },
           { src: "/test-vid.mp4", label: "720p" },

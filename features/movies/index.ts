@@ -20,3 +20,9 @@ export type {
 export { default as MoviesList } from "./components/MoviesList";
 export { default as MovieDetails } from "./components/MovieDetails";
 export { default as SearchMovies } from "./components/SearchMovies";
+export { MoviePlayer } from "./components/MoviePlayer";
+export { default as MovieCard } from "./components/MovieCard";
+
+// Export skeletons
+export { default as MovieDetailsSkeleton } from "./components/MovieDetailsSkeleton";
+export { default as MoviePlayerSkeleton } from "./components/MoviePlayerSkeleton";

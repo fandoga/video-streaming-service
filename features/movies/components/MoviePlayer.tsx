@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
+import { useGetMovieByIdQuery } from "../api/moviesApi";
+import MoviePlayerSkeleton from "./MoviePlayerSkeleton";
 
 type MovieSource = {
   src: string;
@@ -12,14 +14,16 @@ type MovieSource = {
 
 interface MoviePlayerProps {
   sources: MovieSource[];
-  poster?: string;
+  movieId: string;
 }
 
-export const MoviePlayer = ({ sources, poster }: MoviePlayerProps) => {
+export const MoviePlayer = ({ movieId, sources }: MoviePlayerProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const playerRef = useRef<ReturnType<typeof videojs> | null>(null);
   const [currentSource, setCurrentSource] = useState<MovieSource>(sources[0]);
+  const { data, isLoading } = useGetMovieByIdQuery(movieId);
   // Инициализация / очистка завязана на маунт/анмаунт DOM-узла
+
   const handleVideoRef = useCallback(
     (node: HTMLVideoElement | null) => {
       // unmount: очищаем плеер
@@ -42,11 +46,11 @@ export const MoviePlayer = ({ sources, poster }: MoviePlayerProps) => {
           responsive: true,
           fluid: true,
           sources: [currentSource],
-          poster,
+          poster: data?.posterUrl || undefined,
         });
       }
     },
-    [currentSource, poster]
+    [currentSource, data]
   );
 
   // Переключение качества при изменении currentSource
@@ -56,12 +60,15 @@ export const MoviePlayer = ({ sources, poster }: MoviePlayerProps) => {
       src: currentSource.src,
       type: currentSource.type ?? "video/mp4",
     });
-    // playerRef.current.play();
   }, [currentSource]);
+
+  if (isLoading) {
+    return <MoviePlayerSkeleton />;
+  }
 
   return (
     <div className="mx-auto w-full max-w-6xl pb-20">
-      <div className="mb-2 flex justify-end gap-2">
+      {/* <div className="mb-2 flex justify-end gap-2">
         <span className="text-xs text-zinc-400">Качество:</span>
         <div className="inline-flex rounded-md bg-zinc-900/80 p-1 text-xs">
           {sources.map((source) => (
@@ -79,7 +86,7 @@ export const MoviePlayer = ({ sources, poster }: MoviePlayerProps) => {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="aspect-video w-full">
         <div data-vjs-player className="h-full w-full">
