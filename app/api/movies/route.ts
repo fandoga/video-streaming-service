@@ -35,7 +35,7 @@ function transformOMDBToMovie(item: OMDBMovieSearchItem): Movie {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1");
-  const type = searchParams.get("type") || "movies";
+  const type = searchParams.get("type") || "movie";
   const searchQuery = searchParams.get("q") || searchParams.get("s") || "";
 
   if (!OMDB_API_KEY) {
@@ -52,7 +52,13 @@ export async function GET(request: Request) {
         apikey: OMDB_API_KEY,
         s: searchQuery,
         page: page.toString(),
+        type: type,
       });
+
+      // Добавляем type только если он указан
+      // if (type) {
+      //   omdbParams.append("type", type);
+      // }
 
       const omdbResponse = await fetch(
         `${OMDB_API_URL}?${omdbParams.toString()}`

@@ -8,7 +8,7 @@ export const makeStore = () => {
     reducer: {
       example: exampleReducer,
       // RTK Query APIs
-      [moviesApi.reducerPath]: moviesApi.reducer
+      [moviesApi.reducerPath]: moviesApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

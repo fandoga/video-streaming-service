@@ -6,12 +6,18 @@ import MovieCardSkeleton from "./MovieCardSkeleton";
 
 const SKELETON_COUNT = 12;
 
-export default function MoviesList() {
-  const { data, isLoading, error, isFetching } = useGetMoviesQuery();
+interface MovieListProps {
+  type?: string;
+}
+
+export default function MoviesList({ type }: MovieListProps) {
+  const params = type ? { type } : {};
+
+  const { data, isLoading, error, isFetching } = useGetMoviesQuery(params);
 
   if (isLoading) {
     return (
-      <div className="p-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+      <div className="p-4 w-full max-w-7xl grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
           <MovieCardSkeleton key={index} />
         ))}
@@ -39,11 +45,11 @@ export default function MoviesList() {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full max-w-7xl flex justify-center">
       {isFetching && (
         <div className="mb-4 text-sm text-gray-500">Обновление данных...</div>
       )}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {data.movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}

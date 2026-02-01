@@ -25,11 +25,13 @@ const { data, isLoading, error } = useGetMoviesQuery({
 ```
 
 **Параметры:**
+
 - `page?: number` - номер страницы
 - `limit?: number` - количество фильмов на странице
 - `genre?: string` - фильтр по жанру
 
 **Возвращает:**
+
 - `data: MoviesResponse` - список фильмов с метаданными
 - `isLoading: boolean` - состояние загрузки
 - `error: FetchBaseQueryError | SerializedError` - ошибка (если есть)
@@ -46,9 +48,11 @@ const { data, isLoading, error } = useGetMovieByIdQuery(movieId);
 ```
 
 **Параметры:**
+
 - `movieId: string` - ID фильма
 
 **Возвращает:**
+
 - `data: Movie` - информация о фильме
 - `isLoading: boolean` - состояние загрузки
 - `error: FetchBaseQueryError | SerializedError` - ошибка (если есть)
@@ -67,10 +71,12 @@ const { data, isLoading, error } = useSearchMoviesQuery({
 ```
 
 **Параметры:**
+
 - `query: string` - поисковый запрос
 - `page?: number` - номер страницы (по умолчанию 1)
 
 **Возвращает:**
+
 - `data: MoviesResponse` - результаты поиска
 - `isLoading: boolean` - состояние загрузки
 - `error: FetchBaseQueryError | SerializedError` - ошибка (если есть)
@@ -94,6 +100,7 @@ const handleClick = () => {
 ## Кеширование
 
 RTK Query автоматически кеширует данные:
+
 - Данные кешируются на 60 секунд (по умолчанию)
 - При повторном запросе используются кешированные данные
 - Кеш инвалидируется при использовании тегов (tags)
@@ -149,6 +156,7 @@ export default function MoviePage({ movieId }: { movieId: string }) {
 ## Готовые компоненты
 
 В feature включены готовые компоненты:
+
 - `MoviesList` - список фильмов с обработкой loading/error
 - `MovieDetails` - детальная информация о фильме
 - `SearchMovies` - поиск фильмов с формой

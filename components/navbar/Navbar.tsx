@@ -12,7 +12,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-white">
-          Betflix
+          Getflix
         </Link>
 
         {/* Navigation Links */}
