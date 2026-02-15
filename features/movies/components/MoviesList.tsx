@@ -50,9 +50,10 @@ export default function MoviesList({ type }: MovieListProps) {
         <div className="mb-4 text-sm text-gray-500">Обновление данных...</div>
       )}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        {data.movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+        {data.movies.map(
+          (movie) =>
+            movie.posterUrl && <MovieCard key={movie.id} movie={movie} />
+        )}
       </div>
     </div>
   );

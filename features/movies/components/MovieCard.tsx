@@ -15,10 +15,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
       className="group flex flex-col overflow-hidden rounded-lg bg-foreground shadow-sm shadow-black transition hover:-translate-y-1"
     >
       <div className="relative aspect-[6/8] w-full overflow-hidden bg-zinc-800">
-        <img
+        <Image
           src={movie.posterUrl}
           alt={movie.title}
-          sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
+          fill
+          // sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
           className="object-cover transition duration-300 group-hover:brightness-120"
         />
       </div>
