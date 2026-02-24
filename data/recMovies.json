@@ -1,0 +1,22 @@
+[
+    {
+      "name": "Breaking Bad",
+      "img": "/img/breaking_bad-banner.jpg"
+    },
+    {
+      "name": "Stranger Things",
+      "img": "/img/st-banner.jpg"
+    },
+    {
+      "name": "The Dark Knight",
+      "img": "/img/dark_knight-banner.jpg"
+    },
+    {
+      "name": "Inception",
+      "img": "/img/inception-banner.jpg"
+    },
+    {
+      "name": "Game of Thrones",
+      "img": "/img/got-banner.jpg"
+    }
+  ]

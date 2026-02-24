@@ -1,51 +1,77 @@
 "use client";
 
-import { useState } from "react";
+import { act, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const refs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+  const pathname = usePathname();
+  const currentActive =
+    pathname === "/"
+      ? "home"
+      : pathname.startsWith("/movies")
+        ? "movies"
+        : pathname.startsWith("/series")
+          ? "series"
+          : pathname.startsWith("/my-list")
+            ? "fav"
+            : "";
+
+  useEffect(() => {
+    const el = refs.current[currentActive];
+    if (el) {
+      const { offsetWidth, offsetLeft } = el;
+      setIndicator({
+        left: offsetLeft,
+        width: offsetWidth,
+      });
+    }
+  }, [currentActive]);
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-foreground/95 backdrop-blur-sm">
+    <nav className="sticky top-0 z-40 w-full bg-secondary/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-        {/* Logo */}
-        <Link href="/" className="text-2xl font-bold text-white">
+        <Link
+          href="/"
+          className="text-3xl font-bold bg-linear-to-r text-transparent from-cyan-500 to-primary bg-clip-text w-[193px]"
+        >
           Getflix
         </Link>
 
-        {/* Navigation Links */}
-        <div className="hidden items-center gap-6 md:flex">
-          <Link
-            href="/"
-            className="text-white transition-colors hover:text-gray-300"
-          >
-            Главная
-          </Link>
-          <Link
-            href="/movies"
-            className="text-white transition-colors hover:text-gray-300"
-          >
-            Фильмы
-          </Link>
-          <Link
-            href="/series"
-            className="text-white transition-colors hover:text-gray-300"
-          >
-            Сериалы
-          </Link>
-          <Link
-            href="/my-list"
-            className="text-white transition-colors hover:text-gray-300"
-          >
-            Мой список
-          </Link>
+        <div className="relative hidden text-sm items-center gap-6 md:flex">
+          {[
+            { key: "home", href: "/", label: "Home" },
+            { key: "movies", href: "/movies", label: "Movies" },
+            { key: "series", href: "/series", label: "Series" },
+            { key: "fav", href: "/my-list", label: "Favorites" },
+          ].map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              ref={(el) => {
+                refs.current[item.key] = el;
+              }}
+              className="text-white hover:text-gray-300 h-8 flex items-center"
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          <span
+            className="absolute bottom-[-6px] h-[3px] bg-primary transition-all duration-300 ease-out"
+            style={{
+              transform: `translateX(${indicator.left}px)`,
+              width: indicator.width,
+            }}
+          />
         </div>
 
         {/* Search and Profile */}
         <div className="flex items-center gap-4">
-          {/* Search */}
           <div className="hidden md:block">
             <SearchBar />
           </div>

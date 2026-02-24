@@ -53,18 +53,18 @@ export default function SearchBar({ onClose }: SearchBarProps) {
       }}
     >
       <ComboboxInput
-        className={"bg-white"}
-        placeholder="Поиск фильмов..."
+        className={""}
+        placeholder="Search..."
         showTrigger={false}
         showClear
       />
       <ComboboxContent>
         <ComboboxEmpty>
           {isLoading
-            ? "Загрузка..."
+            ? "Loading..."
             : searchQuery.trim().length < 2
-              ? "Начните ввод фильма"
-              : "Фильмы не найдены"}
+              ? "start typing"
+              : "Nothing found"}
         </ComboboxEmpty>
         <ComboboxList>
           {(item: Movie) => (
