@@ -55,11 +55,6 @@ export async function GET(request: Request) {
         type: type,
       });
 
-      // Добавляем type только если он указан
-      // if (type) {
-      //   omdbParams.append("type", type);
-      // }
-
       const omdbResponse = await fetch(
         `${OMDB_API_URL}?${omdbParams.toString()}`
       );

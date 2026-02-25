@@ -3,6 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Movie } from "@/features/movies/types/movies.types";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface MovieCardProps {
   movie: Movie;
@@ -10,27 +19,20 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
-    <Link
-      href={`/movies/${movie.id}`}
-      className="group flex flex-col overflow-hidden rounded-lg bg-foreground shadow-sm shadow-black transition hover:-translate-y-1"
-    >
-      <div className="relative aspect-[6/8] w-full overflow-hidden bg-zinc-800">
-        <Image
+    <Link href={`movies/${movie.id}`}>
+      <Card className="relative w-full pt-0 overflow-hidden cursor-pointer">
+        <img
           src={movie.posterUrl}
           alt={movie.title}
-          fill
-          // sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw"
-          className="object-cover transition duration-300 group-hover:brightness-120"
+          className="relative z-20 object-cover w-full aspect-[6/9]"
         />
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <h3 className="line-clamp-1 text-lg font-semibold text-white">
-          {movie.title}
-        </h3>
-        <div className="mt-auto flex items-center justify-between text-[11px] text-zinc-500">
-          <span>{movie.releaseDate}</span>
+        <div>
+          <CardHeader>
+            <CardTitle className="max-h-4 -mt-2 mb-2">{movie.title}</CardTitle>
+            <CardDescription>{movie.releaseDate}</CardDescription>
+          </CardHeader>
         </div>
-      </div>
+      </Card>
     </Link>
   );
 }

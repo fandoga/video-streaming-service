@@ -14,7 +14,6 @@ export const moviesApi = createApi({
   }),
   tagTypes: ["Movies", "Movie", "Series"],
   endpoints: (builder) => ({
-    // Get list of movies (использует дефолтный поиск "movie" если не указан genre)
     getMovies: builder.query<MoviesResponse, GetMoviesParams | void>({
       query: (params) => {
         const searchParams = new URLSearchParams();
