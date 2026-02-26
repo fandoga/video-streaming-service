@@ -4,9 +4,6 @@ export {
   useGetMoviesQuery,
   useGetMovieByIdQuery,
   useSearchMoviesQuery,
-  useLazyGetMoviesQuery,
-  useLazyGetMovieByIdQuery,
-  useLazySearchMoviesQuery,
 } from "./api/moviesApi";
 
 export type {
