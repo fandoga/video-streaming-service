@@ -1,13 +1,13 @@
 export interface Movie {
-  id: string; // imdbID из OMDB
+  id: string;
   title: string;
-  description: string; // Plot из OMDB
-  posterUrl: string; // Poster из OMDB
-  backdropUrl: string; // можно оставить пустым или использовать Poster
-  releaseDate: string; // Released из OMDB
-  rating: number; // imdbRating из OMDB (нужно парсить)
-  genres: string[]; // Genre из OMDB (нужно парсить строку)
-  duration: number; // Runtime из OMDB (нужно парсить "N min")
+  description: string;
+  posterUrl: string;
+  backdropUrl: string;
+  releaseDate: string;
+  rating: number;
+  genres: string[];
+  duration: number;
 }
 
 export interface MoviesResponse {
@@ -20,11 +20,11 @@ export interface MoviesResponse {
 export interface SearchMoviesParams {
   query: string;
   page?: number;
+  type?: string; // "movie" | "tv"
 }
 
 export interface GetMoviesParams {
   page?: number;
-  limit?: number;
-  genre?: string;
-  type?: string;
+  type?: string; // "movie" | "tv"
+  category?: string; // "popular" | "top_rated" | "trending" | "now_playing" | "upcoming"
 }

@@ -3,78 +3,50 @@ import type {
   Movie,
   MoviesResponse,
   SearchMoviesParams,
-  GetMoviesParams,
 } from "../types/movies.types";
+
+interface GetMoviesParams {
+  page?: number;
+  type?: string; // "movie" | "tv"
+  category?: string; // "popular" | "top_rated" | "trending" | "now_playing" | "upcoming"
+  q?: string; // поисковый запрос
+}
 
 export const moviesApi = createApi({
   reducerPath: "moviesApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl:
-      typeof window !== "undefined" ? "/api" : "http://localhost:3000/api",
-  }),
-  tagTypes: ["Movies", "Movie", "Series"],
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (builder) => ({
-    getMovies: builder.query<MoviesResponse, GetMoviesParams | void>({
-      query: (params) => {
-        const searchParams = new URLSearchParams();
-        // Используем дефолтный "game"
-        searchParams.append("s", "game");
-        if (params?.page) {
-          searchParams.append("page", params.page.toString());
-        }
-        if (params?.type) {
-          searchParams.append("type", params.type);
-        }
-        const queryString = searchParams.toString();
-        return `movies?${queryString}`;
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.movies.map(({ id }) => ({
-                type: "Movies" as const,
-                id,
-              })),
-              { type: "Movies", id: "LIST" },
-            ]
-          : [{ type: "Movies", id: "LIST" }],
-    }),
-
-    // Get movie by ID
-    getMovieById: builder.query<Movie, string>({
-      query: (id) => `movies/${id}`,
-      providesTags: (result, error, id) => [{ type: "Movie", id }],
-    }),
-
-    // Search movies
-    searchMovies: builder.query<MoviesResponse, SearchMoviesParams>({
-      query: ({ query, page = 1 }) => {
-        const searchParams = new URLSearchParams({
-          s: query, // OMDB использует параметр "s" для поиска
+    // Список фильмов/сериалов (включая поиск через q)
+    getMovies: builder.query<MoviesResponse, GetMoviesParams>({
+      query: ({ page = 1, type = "movie", category = "popular", q }) => {
+        const params = new URLSearchParams({
           page: page.toString(),
+          type,
+          category,
         });
-        return `movies?${searchParams.toString()}`;
+        if (q) params.set("q", q);
+        return `/movies?${params.toString()}`;
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.movies.map(({ id }) => ({
-                type: "Movies" as const,
-                id,
-              })),
-              { type: "Movies", id: "SEARCH" },
-            ]
-          : [{ type: "Movies", id: "SEARCH" }],
+    }),
+
+    // Детали фильма по id (использует /api/movies/[id])
+    getMovieById: builder.query<Movie, string>({
+      query: (id) => `/movies/${id}`,
+    }),
+
+    // Поиск (обёртка над тем же /api/movies с параметром q)
+    searchMovies: builder.query<MoviesResponse, SearchMoviesParams>({
+      query: ({ query, page = 1, type = "movie" }) => {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          type,
+          q: query,
+        });
+        return `/movies?${params.toString()}`;
+      },
     }),
   }),
 });
 
-// Export hooks for usage in functional components
-export const {
-  useGetMoviesQuery,
-  useGetMovieByIdQuery,
-  useSearchMoviesQuery,
-  useLazyGetMoviesQuery,
-  useLazyGetMovieByIdQuery,
-  useLazySearchMoviesQuery,
-} = moviesApi;
+export const { useGetMoviesQuery, useGetMovieByIdQuery, useSearchMoviesQuery } =
+  moviesApi;

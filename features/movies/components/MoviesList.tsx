@@ -9,18 +9,31 @@ import { Movie } from "../types/movies.types";
 const SKELETON_COUNT = 12;
 
 interface MovieListProps {
-  type?: string;
+  type?: string; // "movie" | "tv"
+  category?: string; // "popular" | "top_rated" | "trending" | "now_playing"
+  searchQuery?: string;
 }
 
-export default function MoviesList({ type }: MovieListProps) {
+export default function MoviesList({
+  type = "movie",
+  category = "popular",
+}: MovieListProps) {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState(1);
   const [movies, setMovies] = useState<Movie[]>([]);
   const moviesRef = useRef<Movie[]>([]);
+
+  // useEffect(() => {
+  //   setPage(1);
+  //   setMovies([]);
+  //   moviesRef.current = [];
+  // }, [type, category, searchQuery]);
+
   const params = {
     page,
-    type: type && type,
+    type,
+    category,
   };
 
   const { data, isLoading, error, isFetching } = useGetMoviesQuery(params);
@@ -39,7 +52,7 @@ export default function MoviesList({ type }: MovieListProps) {
       moviesRef.current = updated;
       setMovies(updated);
     }
-  }, [data]);
+  }, [data, movies]);
 
   useEffect(() => {
     if (!loaderRef.current || isFetching) return;
