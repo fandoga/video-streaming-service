@@ -29,7 +29,7 @@ const MovieNotMovieModal = ({ open, onClose }: MovieNotMovieModalProps) => {
         <CardContent>
           <p className="test-sm">
             Поскольку это не пиратский сайт, а просто демонстрация, здесь не
-            получиться посмотреть все эти фильмы и сериалы. Мы можете посмотреть
+            получиться посмотреть все эти фильмы и сериалы. Вы можете посмотреть
             их на Кинопоиске или любой другой официальной площадке. Поэтому
             давайте посмотрим на этот прекрасный мемный ролик))
           </p>
@@ -41,7 +41,7 @@ const MovieNotMovieModal = ({ open, onClose }: MovieNotMovieModalProps) => {
             size="sm"
             className="w-full cursor-pointer"
           >
-            Ok, i got it
+            Так уже и быть
           </Button>
         </CardFooter>
       </Card>
