@@ -31,7 +31,7 @@ const Popup = () => {
           <CardHeader className="text-center">
             <img
               className="w-full h-36 mb-4 object-contain"
-              src="img/icons/error.png"
+              src="/img/icons/error.png"
               alt="connection_lost-icon"
             />
             <CardTitle className="text-lg">Please use VPN</CardTitle>

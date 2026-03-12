@@ -4,6 +4,7 @@ import "./globals.css";
 import ReduxProvider from "@/shared/components/providers/ReduxProvider";
 import Navbar from "@/shared/components/navbar/Navbar";
 import Popup from "@/shared/components/popup/Popup";
+import Footer from "@/shared/components/footer/Footer";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400"],
@@ -29,6 +30,7 @@ export default function RootLayout({
           <Popup />
           <Navbar />
           {children}
+          <Footer />
         </ReduxProvider>
       </body>
     </html>
