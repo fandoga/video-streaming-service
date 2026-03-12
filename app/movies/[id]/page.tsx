@@ -14,15 +14,17 @@ export default async function MoviePage({
   }
 
   return (
-    <main className="mx-auto py-12 max-w-7xl h-full">
-      <MovieDetails movieId={id} />
-      <MoviePlayer
-        movieId={id}
-        sources={[
-          { src: "/test-vid.mp4", label: "1080p" },
-          { src: "/test-vid.mp4", label: "720p" },
-        ]}
-      />
-    </main>
+    <div className="relative w-full min-h-screen bg-repeat-y bg-[url(/img/background.png)]">
+      <main className="mx-auto py-12 max-w-7xl h-full">
+        <MovieDetails movieId={id} />
+        <MoviePlayer
+          movieId={id}
+          sources={[
+            { src: "/test-vid.mp4", label: "1080p" },
+            { src: "/test-vid.mp4", label: "720p" },
+          ]}
+        />
+      </main>
+    </div>
   );
 }
