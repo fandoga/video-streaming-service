@@ -10,8 +10,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 
 interface MovieCardProps {
   movie: Movie;

@@ -24,12 +24,6 @@ export default function MoviesList({
   const [movies, setMovies] = useState<Movie[]>([]);
   const moviesRef = useRef<Movie[]>([]);
 
-  // useEffect(() => {
-  //   setPage(1);
-  //   setMovies([]);
-  //   moviesRef.current = [];
-  // }, [type, category, searchQuery]);
-
   const params = {
     page,
     type,
@@ -78,7 +72,7 @@ export default function MoviesList({
 
   if (isLoading) {
     return (
-      <div className="p-4 w-full max-w-7xl grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="py-12 w-full max-w-7xl grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
           <MovieCardSkeleton key={index} />
         ))}
@@ -104,12 +98,10 @@ export default function MoviesList({
       </div>
     );
   }
+  console.log(movies);
 
   return (
-    <div className="py-14 w-full max-w-7xl justify-center">
-      {isFetching && (
-        <div className="mb-4 text-sm text-gray-500">Обновление данных...</div>
-      )}
+    <div className="w-full max-w-7xl justify-center">
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {movies.map(
           (movie) =>

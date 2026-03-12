@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import ReduxProvider from "@/components/providers/ReduxProvider";
-import Navbar from "@/components/navbar/Navbar";
+import ReduxProvider from "@/shared/components/providers/ReduxProvider";
+import Navbar from "@/shared/components/navbar/Navbar";
+import Popup from "@/shared/components/popup/Popup";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400"],
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${poppins.className} antialiased`}>
         <ReduxProvider>
+          <Popup />
           <Navbar />
           {children}
         </ReduxProvider>

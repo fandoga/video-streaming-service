@@ -6,9 +6,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/shared/components/ui/carousel";
 import recMovies from "@/data/recMovies.json";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 

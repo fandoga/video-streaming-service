@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 const MovieBanner = () => {
   return (
-    <div className="relative h-125 md:h-100 w-full overflow-hidden">
+    <div className="relative h-125 md:h-100 2xl:h-150 w-full overflow-hidden">
       <img
         className="size-full object-cover"
         src="img/avatar-banner.png"

@@ -1,17 +1,17 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardHeader } from "@/shared/components/ui/card";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import React from "react";
 
 export default function MovieCardSkeleton() {
   return (
-    <div className="group flex flex-col">
-      <div className="relative aspect-[6/9] w-full">
-        <Skeleton className="w-full h-full rounded-md" />
+    <Card className="relative w-full pt-0 overflow-hidden">
+      <Skeleton className="aspect-[6/9] w-full" />
+      <div>
+        <CardHeader>
+          <Skeleton className="h-3 w-2/3" />
+          <Skeleton className="h-3 w-1/2" />
+        </CardHeader>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
-      </div>
-    </div>
+    </Card>
   );
 }

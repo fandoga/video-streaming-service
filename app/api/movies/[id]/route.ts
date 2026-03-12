@@ -44,20 +44,20 @@ export async function GET(
   }
 
   try {
-    // Сначала пробуем как фильм
+    // Сначала пробуем как сериал
     const params = new URLSearchParams({
       api_key: TMDB_API_KEY,
       language: "en-EN",
     });
 
     let tmdbResponse = await fetch(
-      `${TMDB_BASE_URL}/movie/${id}?${params.toString()}`
+      `${TMDB_BASE_URL}/tv/${id}?${params.toString()}`
     );
 
-    // Если фильм не найден (404), пробуем как сериал
+    // Если не найден (404), пробуем как фильм
     if (tmdbResponse.status === 404) {
       tmdbResponse = await fetch(
-        `${TMDB_BASE_URL}/tv/${id}?${params.toString()}`
+        `${TMDB_BASE_URL}/movie/${id}?${params.toString()}`
       );
     }
 
