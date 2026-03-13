@@ -14,7 +14,7 @@ export default async function MoviePage({
   }
 
   return (
-    <div className="relative w-full min-h-screen bg-repeat-y bg-[url(/img/background.png)]">
+    <div className="relative w-full min-h-screen bg-repeat bg-[url(/img/background.png)]">
       <main className="mx-auto py-12 max-w-7xl h-full">
         <MovieDetails movieId={id} />
         <MoviePlayer

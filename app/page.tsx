@@ -4,7 +4,7 @@ import MovieCarousel from "@/features/movies/components/MovieCarousel";
 
 export default function Home() {
   return (
-    <div className="relative w-full flex flex-col justify-center items-center">
+    <div className="relative w-full flex flex-col px-6 justify-center items-center">
       <MovieBanner />
       <MovieBrandsCarousel />
       <MovieCarousel />
