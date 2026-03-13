@@ -18,7 +18,7 @@ const MovieCarousel = () => {
   );
 
   return (
-    <div className="relative w-[80%] xl:w-7xl m-auto pt-20 ">
+    <div className="relative w-[85%] 2xl:w-7xl m-auto pt-20 ">
       <Carousel
         className="transition-all hover:shadow-xl shadow-blue-500/7"
         opts={{

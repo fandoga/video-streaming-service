@@ -12,7 +12,7 @@ const MovieBanner = () => {
         className="absolute inset-0 w-[40%]  bg-gradient-to-r from-black/90 to-transparent"
         aria-hidden
       />
-      <div className="absolute bottom-20 right-0 left-0 max-w-7xl mx-auto">
+      <div className="absolute bottom-20 right-0 left-0 ml-10 2xl:max-w-7xl 2xl:mx-auto">
         <Button
           className="rounded-full cursor-pointer text-white h-12 text-lg hover:scale-103"
           size={"lg"}
